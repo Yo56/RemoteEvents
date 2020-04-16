@@ -128,7 +128,7 @@ namespace RemotingEvents.Client
         }
 
         private void Accept_Click(object sender, EventArgs e)
-        {/*
+        {
             Button clickedButton = (Button)sender;
             String username = clickedButton.Parent.Name;
             String name = remoteServer.GetRealNameFromUser(username);
@@ -143,7 +143,7 @@ namespace RemotingEvents.Client
             clickedButton.Parent.Dispose();
             //Local only for now
             //Might need to be comunicated and handled by the server later
-            Console.WriteLine("Accepted invitation from " + username);*/
+            Console.WriteLine("Accepted invitation from " + username);
         }
 
         private void Decline_Click(object sender, EventArgs e)
