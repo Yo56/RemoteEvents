@@ -15,10 +15,26 @@ namespace RemotingEvents.Common
         #endregion
 
         #region Methods
-
+        //it contains prototypes of server methods 
         void PublishMessage(string Message);
-        string HelloWorld();
 
+        /////////////////////////////// METHOD PROTOTYPES /////////////////////////////
+        string HelloWorld();
+        //void InitServer();
+        Boolean DoesThisUserExist(String nickname);
+        User GetUser(String nickname);
+        string GetRealNameFromUser(String username);
+        Boolean Authentication(String nickname, String hashedPasswordInput, String ipAddress);
+        void Registration(User user, String ipAddress);
+        void LogOut(string username);
+        void addUserToOnlineUsers(String username, String ipAddress);
+        string GetAddressFromOnlineUser(String username);
+        int AllocatePort(String nickname);
+        int GetFreePort(String nickname);
+        bool IsPortFree(String userAddress, int port);
+        Dictionary<string, string> getOnlineUsers();
+
+        ////////////////////////////////////////////////////////////////////////////////////////
         #endregion
 
     }

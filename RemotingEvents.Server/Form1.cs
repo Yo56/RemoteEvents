@@ -21,7 +21,7 @@ namespace RemotingEvents.Server
 
         private void bttn_StartServer_Click(object sender, EventArgs e)
         {
-            server = new RemotingServer();
+            RemotingServer server = new RemotingServer();
             server.StartServer(1234);
             server.MessageArrived += new RemotingEvents.Common.MessageArrivedEvent(server_MessageArrived);
             SetTextBox("Server Started");

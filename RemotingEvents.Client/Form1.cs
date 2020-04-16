@@ -62,7 +62,7 @@ namespace RemotingEvents.Client
             try
             {
                 remoteServer = (IServerObject)Activator.GetObject(typeof(IServerObject), serverURI);
-                remoteServer.PublishMessage("Client Connected");        //This is where it will break if we didn't connect
+                //remoteServer.PublishMessage("Client Connected");        //This is where it will break if we didn't connect
             
                 //Now we have to attach the events...
                 remoteServer.MessageArrived += new MessageArrivedEvent(eventProxy.LocallyHandleMessageArrived);
