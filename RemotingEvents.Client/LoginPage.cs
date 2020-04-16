@@ -14,17 +14,15 @@ namespace RemotingEvents.Client
     public partial class LoginPage : Form
     {
         //Server component
-        //ServerData sd;
         String ipAddress = GetLocalIPAddress();
         TcpClientChannel channel;
 
-
         IServerObject remoteServer;
-        EventProxy eventProxy;
+        
         TcpChannel tcpChan;
         BinaryClientFormatterSinkProvider clientProv;
         BinaryServerFormatterSinkProvider serverProv;
-        private string serverURI = "tcp://localhost:1234/serverExample.Rem";        //Replace with your IP
+        private string serverURI = "tcp://localhost:1234/serverExample.Rem";    
         private bool connected = false;
 
         public LoginPage()
@@ -35,9 +33,7 @@ namespace RemotingEvents.Client
             clientProv = new BinaryClientFormatterSinkProvider();
             serverProv = new BinaryServerFormatterSinkProvider();
             serverProv.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-
-            eventProxy = new EventProxy();
-            //eventProxy.MessageArrived += new MessageArrivedEvent(eventProxy_MessageArrived);
+          
 
             Hashtable props = new Hashtable();
             props["name"] = "remotingClient";
@@ -51,12 +47,7 @@ namespace RemotingEvents.Client
             try
             {
                 remoteServer = (IServerObject)Activator.GetObject(typeof(IServerObject), serverURI);
-                //remoteServer.PublishMessage("Client Connected");        //This is where it will break if we didn't connect
-
-                //Now we have to attach the events...
-                //remoteServer.MessageArrived += new MessageArrivedEvent(eventProxy.LocallyHandleMessageArrived);
                 connected = true;
-
                 Console.WriteLine(remoteServer.HelloWorld());
             }
             catch (Exception ex)
@@ -76,14 +67,6 @@ namespace RemotingEvents.Client
             */
         }
 
-        /*
-        public LoginPage(ServerData sd)
-        {
-            Console.WriteLine("Client starting ...");
-            InitializeComponent();
-            this.sd = sd;
-            Console.WriteLine(sd.Hello());
-        }*/
 
         public static string GetLocalIPAddress()
         {
@@ -181,7 +164,7 @@ namespace RemotingEvents.Client
             if (user != null) //user == null should not occured !
             {
                 //Close login page and open next one
-                MainPage mainPage = new MainPage(user, remoteServer, channel);
+                MainPage mainPage = new MainPage(user, remoteServer);
                 this.Visible = false;
                 mainPage.ShowDialog();
                 this.Close();

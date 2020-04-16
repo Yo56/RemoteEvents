@@ -10,7 +10,7 @@ namespace RemotingEvents.Common
 
         #region Event Declarations
 
-        public event MessageArrivedEvent MessageArrived;
+        public event OnlineUsersChangedEvent OnlineUsersChanged;
 
         #endregion
 
@@ -25,10 +25,10 @@ namespace RemotingEvents.Common
 
         #region Local Handlers
 
-        public void LocallyHandleMessageArrived(string Message)
+        public void LocallyHandleOnlineUsersChanged(Dictionary<string,string> onlineUsers)
         {
-            if (MessageArrived != null)
-                MessageArrived(Message);
+            if (OnlineUsersChanged != null)
+                OnlineUsersChanged(onlineUsers);
         }
 
         #endregion

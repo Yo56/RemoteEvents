@@ -21,8 +21,7 @@ namespace RemotingEvents.Server
         private Boolean serverActive = false;
         private static string serverURI = "serverExample.Rem";
 
-
-        /////////////////////////////////      Data    /////////////////////////////////////////////
+        ////////////////////////////   Data    /////////////////////////////////////////////
         
         Dictionary<String, User> registeredUsers;
         //Dictionary of Online users
@@ -30,22 +29,14 @@ namespace RemotingEvents.Server
 
         //Dictionary of used ports in each address
         Dictionary<String, List<int>> usedPortsByAddress;
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
         #endregion
 
         #region IServerObject Members
-
-        public event MessageArrivedEvent MessageArrived;
-
-        public void PublishMessage(string Message)
-        {
-            SafeInvokeMessageArrived(Message);
-        }
-
-        ///////////////////////// METHODS  ////////////////////////////////////////////
+        ///////////////////////// ACCESSIBLE REMOTELY ////////////////////////////////////
         
+        //event to handle when a user log in/out
+        public event OnlineUsersChangedEvent OnlineUsersChanged;
+
         public string HelloWorld()
         {
             Console.WriteLine("[Client connected to the server]");
@@ -55,9 +46,8 @@ namespace RemotingEvents.Server
         public RemotingServer()
         {
             Console.WriteLine("Initialization...");
-            
 
-            //Storage.DeleteAllUsers();   // line commented => users are loaded from file
+            Storage.DeleteAllUsers();   // line commented => users are loaded from file
                                           // line uncommented => users are deleted at server loading
 
             registeredUsers = Storage.LoadRegisteredUsersFromFile();
@@ -162,10 +152,10 @@ namespace RemotingEvents.Server
 
         public void LogOut(string username)
         {
-            User user = null;
             if (onlineUsers.Remove(username))
             {
                 Console.WriteLine("user " + username + " disconnected!");
+                SafeInvokeOnlineUsersChanged(onlineUsers);
             }
             else
             {
@@ -179,6 +169,7 @@ namespace RemotingEvents.Server
             try
             {
                 onlineUsers.Add(username, ipAddress);
+                SafeInvokeOnlineUsersChanged(onlineUsers);
             }
             catch (ArgumentException)
             {
@@ -276,10 +267,10 @@ namespace RemotingEvents.Server
             Console.WriteLine("onlineUsers dictionnary returned");
             return onlineUsers;
         }
-
-        //////////////////////////////////////////////////////////////////////////////
         #endregion
 
+        #region server configuration
+        ////////////////////  SERVER CONFIGURATION  //////////////////////////////
         public void StartServer(int port)
         {
             Console.WriteLine("Server starting on port " + port + " ...");
@@ -330,32 +321,36 @@ namespace RemotingEvents.Server
 
             }
         }
+        #endregion
 
-        private void SafeInvokeMessageArrived(string Message)
+        #region Safe invoke
+        // Call event listeners when ONLINE USERS change
+        private void SafeInvokeOnlineUsersChanged(Dictionary<string,string> listOfOnlineUsers )
         {
             if (!serverActive)
                 return;
 
-            if (MessageArrived == null)
+            if (OnlineUsersChanged == null)
                 return;         //No Listeners
 
-            MessageArrivedEvent listener = null;
-            Delegate[] dels = MessageArrived.GetInvocationList();
+            OnlineUsersChangedEvent listener = null;
+            Delegate[] dels = OnlineUsersChanged.GetInvocationList();
 
             foreach (Delegate del in dels)
             {
                 try
                 {
-                    listener = (MessageArrivedEvent)del;
-                    listener.Invoke(Message);
+                    listener = (OnlineUsersChangedEvent) del;
+                    listener.Invoke(listOfOnlineUsers);
                 }
                 catch (Exception ex)
                 {
                     //Could not reach the destination, so remove it
                     //from the list
-                    MessageArrived -= listener;
+                    OnlineUsersChanged -= listener;
                 }
             }
         }
+        #endregion
     }
 }

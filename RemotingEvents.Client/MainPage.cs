@@ -16,26 +16,38 @@ namespace RemotingEvents.Client
 {
     public partial class MainPage : Form
     {
+        //DATA
         User userLogged;
-        Dictionary<string, string> activeUsers;
-        //Server component
-        IServerObject remoteServer;
-        TcpClientChannel TCPChannel;
 
-        public MainPage(User userLogged, IServerObject server, TcpClientChannel channel)
+        //Server component
+        EventProxy eventProxy;
+        IServerObject remoteServer;
+
+        //delegate function
+        private delegate void InvokeDelegateOnlineUsersUpdate(Dictionary<string,string> users);
+
+        public MainPage(User userLogged, IServerObject server)
         {
             //get user from loginPage
             this.userLogged = userLogged;
             InitializeComponent();
             labelUserFullName.Text = userLogged.Name;
             labelUserNickname.Text = userLogged.Nickname;
-            //Server component
+            
+            //Server components
+            this.eventProxy = new EventProxy();
             this.remoteServer = server;
-            this.TCPChannel = channel;
 
             //get activeUsers from server
-            activeUsers = remoteServer.getOnlineUsers();
-            GenerateActiveUsersList();
+            GenerateActiveUsersList(remoteServer.getOnlineUsers());
+
+            //Handle proxy
+            eventProxy.OnlineUsersChanged += new OnlineUsersChangedEvent(EventProxy_OnlineUsersChanged);
+
+            //attach the onlineUsersChanged event to receive updates when the list changes
+            remoteServer.OnlineUsersChanged += new OnlineUsersChangedEvent(eventProxy.LocallyHandleOnlineUsersChanged);
+            
+            
         }
 
         private void buttonLogOut_Click(object sender, EventArgs e) //MAYBE divide into 2 functions 
@@ -59,6 +71,7 @@ namespace RemotingEvents.Client
 
         }
 
+        #region Chat Request
         /////////////////// CHAT REQUEST MANAGEMENT //////////////////////////
 
         private void TempSimulateNewChatRequest_Click(object sender, EventArgs e)
@@ -145,12 +158,32 @@ namespace RemotingEvents.Client
 
         }
 
+        #endregion
 
+        #region Online users management
         /////////////////// ACTIVE/ONLINE USERS MANAGEMENT //////////////////////////
 
-        private void GenerateActiveUsersList()
+        // method in relation with EventProxy
+        private void EventProxy_OnlineUsersChanged(Dictionary<string,string> listOfOnlineUsers)
         {
-            foreach(KeyValuePair<string, string> entry in activeUsers)
+            Console.WriteLine("Client received an update of OnlineUsers !");
+            RefreshOnlineUsersDisplay(listOfOnlineUsers);
+        }
+
+        private void RefreshOnlineUsersDisplay(Dictionary<string, string> listOfOnlineUsers)
+        {
+            this.BeginInvoke(new InvokeDelegateOnlineUsersUpdate(GenerateActiveUsersList), new object[] { listOfOnlineUsers });
+            return;
+        }
+
+        //method wich refreshes the Active/online users
+        private void GenerateActiveUsersList(Dictionary<string, string> listOfOnlineUsers)
+        {
+            //clear all rows
+            activeUsersFlowLayoutPanel.Controls.Clear();
+
+            //fill the rows with fresh data
+            foreach (KeyValuePair<string, string> entry in listOfOnlineUsers)
             {
                 // remove the user logged into the list of online available users 
                 if (!userLogged.Nickname.Equals(entry.Key))
@@ -161,11 +194,7 @@ namespace RemotingEvents.Client
             }
         }
 
-        private void tempButtonAddOnlineUsers_Click(object sender, EventArgs e)
-        {
-            GenerateActiveUserRow("EliseMNV");
-        }
-
+        //method that creates a online user row
         private void GenerateActiveUserRow(String username)
         {
             Console.WriteLine("Creating new activeUsersFlowLayoutPanel : " + activeUsersFlowLayoutPanel.Controls.Count);
@@ -195,6 +224,6 @@ namespace RemotingEvents.Client
             onlineUserPanel.Controls.Add(sendRequestButton);
         }
 
-        
+        #endregion
     }
 }

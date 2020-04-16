@@ -10,17 +10,13 @@ namespace RemotingEvents.Common
 
         #region Events
 
-        event MessageArrivedEvent MessageArrived;
+        event OnlineUsersChangedEvent OnlineUsersChanged;
 
         #endregion
 
         #region Methods
-        //it contains prototypes of server methods 
-        void PublishMessage(string Message);
-
         /////////////////////////////// METHOD PROTOTYPES /////////////////////////////
         string HelloWorld();
-        //void InitServer();
         Boolean DoesThisUserExist(String nickname);
         User GetUser(String nickname);
         string GetRealNameFromUser(String username);

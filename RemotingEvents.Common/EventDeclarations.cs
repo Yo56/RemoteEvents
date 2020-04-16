@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RemotingEvents.Common
 {
-    
-    public delegate void MessageArrivedEvent(string Message);
+
+    public delegate void OnlineUsersChangedEvent(Dictionary<String, String> onlineUsers);
 
 }
