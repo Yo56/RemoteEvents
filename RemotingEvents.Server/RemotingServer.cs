@@ -29,6 +29,7 @@ namespace RemotingEvents.Server
 
         //Dictionary of used ports in each address
         Dictionary<String, List<int>> usedPortsByAddress;
+
         #endregion
 
         #region IServerObject Members
@@ -36,28 +37,12 @@ namespace RemotingEvents.Server
         
         //event to handle when a user log in/out
         public event OnlineUsersChangedEvent OnlineUsersChanged;
+        public event NewChatRequestEvent NewChatRequest;
 
         public string HelloWorld()
         {
             Console.WriteLine("[Client connected to the server]");
             return "Connection established to the server";
-        }
-
-        public RemotingServer()
-        {
-            Console.WriteLine("Initialization...");
-
-            Storage.DeleteAllUsers();   // line commented => users are loaded from file
-                                          // line uncommented => users are deleted at server loading
-
-            registeredUsers = Storage.LoadRegisteredUsersFromFile();
-
-            onlineUsers = new Dictionary<String, String>();
-            usedPortsByAddress = new Dictionary<string, List<int>>();
-
-            StartServer(1234);
-
-            Console.ReadKey(); //Avoid stop
         }
 
         //Method checking if there is already an existing account with this nickname
@@ -267,10 +252,45 @@ namespace RemotingEvents.Server
             Console.WriteLine("onlineUsers dictionnary returned");
             return onlineUsers;
         }
+
+        public Boolean SendChatRequest(string senderNickname, string receiverUsername)
+        {
+            if (onlineUsers.ContainsKey(receiverUsername))
+            {
+                Console.WriteLine("New chat request from " + senderNickname + " to " + receiverUsername);
+                safeInvokeNewChatRequest(senderNickname, receiverUsername);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("User " + receiverUsername + " not found in online users");
+                return false;
+            }
+            
+        }
+
         #endregion
 
         #region server configuration
         ////////////////////  SERVER CONFIGURATION  //////////////////////////////
+
+        public RemotingServer()
+        {
+            Console.WriteLine("Initialization...");
+
+            Storage.DeleteAllUsers();   // line commented => users are loaded from file
+                                        // line uncommented => users are deleted at server loading
+
+            registeredUsers = Storage.LoadRegisteredUsersFromFile();
+
+            onlineUsers = new Dictionary<String, String>();
+            usedPortsByAddress = new Dictionary<string, List<int>>();
+
+            StartServer(1234);
+
+            Console.ReadKey(); //Avoid stop
+        }
+
         public void StartServer(int port)
         {
             Console.WriteLine("Server starting on port " + port + " ...");
@@ -348,6 +368,34 @@ namespace RemotingEvents.Server
                     //Could not reach the destination, so remove it
                     //from the list
                     OnlineUsersChanged -= listener;
+                }
+            }
+        }
+
+        //call event listeners when A new chat request is created
+        private void safeInvokeNewChatRequest(string senderNickname, string receiverNickname)
+        {
+            if (!serverActive)
+                return;
+
+            if (NewChatRequest == null)
+                return;         //No Listeners
+
+            NewChatRequestEvent listener = null;
+            Delegate[] dels = NewChatRequest.GetInvocationList();
+
+            foreach (Delegate del in dels)
+            {
+                try
+                {
+                    listener = (NewChatRequestEvent)del;
+                    listener.Invoke(senderNickname, receiverNickname);
+                }
+                catch (Exception ex)
+                {
+                    //Could not reach the destination, so remove it
+                    //from the list
+                    NewChatRequest -= listener;
                 }
             }
         }

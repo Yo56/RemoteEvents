@@ -23,8 +23,9 @@ namespace RemotingEvents.Client
         EventProxy eventProxy;
         IServerObject remoteServer;
 
-        //delegate function
+        //delegate functions
         private delegate void InvokeDelegateOnlineUsersUpdate(Dictionary<string,string> users);
+        private delegate void InvokeDelegateChatRequestUpdate(string senderNickname);
 
         public MainPage(User userLogged, IServerObject server)
         {
@@ -43,10 +44,11 @@ namespace RemotingEvents.Client
 
             //Handle proxy
             eventProxy.OnlineUsersChanged += new OnlineUsersChangedEvent(EventProxy_OnlineUsersChanged);
+            eventProxy.NewChatRequest += new NewChatRequestEvent(EventProxy_NewChatRequest);
 
-            //attach the onlineUsersChanged event to receive updates when the list changes
+            //attach the proxy handle functions to Server events 
             remoteServer.OnlineUsersChanged += new OnlineUsersChangedEvent(eventProxy.LocallyHandleOnlineUsersChanged);
-            
+            remoteServer.NewChatRequest += new NewChatRequestEvent(eventProxy.LocallyHandleNewChatRequest);
             
         }
 
@@ -56,19 +58,8 @@ namespace RemotingEvents.Client
             Console.WriteLine("Disconnecting from server...");
             remoteServer.LogOut(userLogged.Nickname);
 
-            //RemotingServices.Disconnect(sd);
-            //ChannelServices.UnregisterChannel(TCPChannel);
-
             Process.Start("RemotingEvents.Client.exe");
             Environment.Exit(0);
-            
-            
-            //manage windows 
-            /*LoginPage loginPage = new LoginPage(sd);
-            this.Visible = false;
-            loginPage.ShowDialog();
-            this.Close();*/
-
         }
 
         #region Chat Request
@@ -109,6 +100,8 @@ namespace RemotingEvents.Client
             acceptButton.Text = "Accept";
             acceptButton.Name = "Accept";
             acceptButton.Size = new Size(75, 25);
+            acceptButton.BackColor = Color.FromArgb(255, 255, 255);
+            acceptButton.ForeColor = Color.FromArgb(0, 0, 0);
             acceptButton.Location = new Point(150, 12);
             acceptButton.Click += new EventHandler(this.Accept_Click);
 
@@ -121,6 +114,8 @@ namespace RemotingEvents.Client
             declineButton.Text = "Decline";
             declineButton.Name = "Decline";
             declineButton.Size = new Size(75, 25);
+            declineButton.BackColor = Color.FromArgb(255, 255, 255);
+            declineButton.ForeColor = Color.FromArgb(0, 0, 0);
             declineButton.Location = new Point(235, 12);
             declineButton.Click += new EventHandler(this.Decline_Click);
 
@@ -158,9 +153,25 @@ namespace RemotingEvents.Client
 
         }
 
+        //method in relation with EventProxy
+        private void EventProxy_NewChatRequest(string senderNickname, string receiverNickname)
+        {
+            //Console.WriteLine("Client received a Chat Request but doesn't know for whom it is intended");
+            
+            if(userLogged.Nickname.Equals(receiverNickname))
+            {
+                Console.WriteLine("Client received a Chat Request from "+senderNickname);
+                this.BeginInvoke(new InvokeDelegateChatRequestUpdate(GenerateNewChatRequestRow), new object[] { senderNickname });
+                return;
+            }
+            
+        }
         #endregion
 
+
+
         #region Online users management
+
         /////////////////// ACTIVE/ONLINE USERS MANAGEMENT //////////////////////////
 
         // method in relation with EventProxy
@@ -209,6 +220,7 @@ namespace RemotingEvents.Client
             activeUsersFlowLayoutPanel.Controls.Add(onlineUserPanel);
             //activeUsersFlowLayoutPanel.Controls.SetChildIndex(onlineUserPanel, 0);  // this moves the new one to the top!
             onlineUserPanel.Paint += (ss, ee) => { ee.Graphics.DrawString(username, Font, Brushes.Black, 22, 18); };
+
         }
 
         private void GenerateSendInvitationButton(Panel onlineUserPanel)
@@ -226,8 +238,21 @@ namespace RemotingEvents.Client
 
         private void SendChatInvitation_Click(object sender, EventArgs e)
         {
-            string parentName = ((Button)sender).Parent.Name;
+            //get the name of the parent container which is the name of the user
+            Button button = (Button) sender;
+            string parentName = button.Parent.Name; 
             Console.WriteLine("Sending an invitation to user "+parentName+"...");
+
+            Boolean invitationSent = remoteServer.SendChatRequest(userLogged.Nickname, parentName);
+            if (invitationSent)
+            {
+                Console.WriteLine("invitation sent !");
+                button.Text = "sent !";
+            }
+            else
+            {
+                Console.WriteLine("Problem : invitation not sent");
+            }
         }
 
         #endregion

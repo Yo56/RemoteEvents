@@ -11,6 +11,7 @@ namespace RemotingEvents.Common
         #region Events
 
         event OnlineUsersChangedEvent OnlineUsersChanged;
+        event NewChatRequestEvent NewChatRequest;
 
         #endregion
 
@@ -29,6 +30,7 @@ namespace RemotingEvents.Common
         int GetFreePort(String nickname);
         bool IsPortFree(String userAddress, int port);
         Dictionary<string, string> getOnlineUsers();
+        Boolean SendChatRequest(string senderNickname, string receiverUsername);
 
         ////////////////////////////////////////////////////////////////////////////////////////
         #endregion
