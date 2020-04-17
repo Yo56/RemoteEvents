@@ -200,7 +200,7 @@ namespace RemotingEvents.Client
             Console.WriteLine("Creating new activeUsersFlowLayoutPanel : " + activeUsersFlowLayoutPanel.Controls.Count);
 
             Panel onlineUserPanel = new Panel();
-            onlineUserPanel.Name = "panelOnlineUser" + username;
+            onlineUserPanel.Name = username;
             onlineUserPanel.BackColor = Color.FromArgb(204, 233, 255);
             onlineUserPanel.Size = new Size(325, 50);
 
@@ -219,9 +219,15 @@ namespace RemotingEvents.Client
             sendRequestButton.Size = new Size(100, 25);
             sendRequestButton.Location = new Point(200, 12);
             sendRequestButton.BackColor = Color.FromArgb(255, 255, 255);
-            //sendRequestButton.Click += new EventHandler(this.Accept_Click);
+            sendRequestButton.Click += new EventHandler(this.SendChatInvitation_Click);
 
             onlineUserPanel.Controls.Add(sendRequestButton);
+        }
+
+        private void SendChatInvitation_Click(object sender, EventArgs e)
+        {
+            string parentName = ((Button)sender).Parent.Name;
+            Console.WriteLine("Sending an invitation to user "+parentName+"...");
         }
 
         #endregion
