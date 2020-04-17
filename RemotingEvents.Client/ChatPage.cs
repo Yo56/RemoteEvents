@@ -22,8 +22,8 @@ namespace RemotingEvents.Client
         {
             this.userLogged = userLogged;
             InitializeComponent();
-            RealName.Text = userLogged.Name;
-            Nickname.Text = userLogged.Nickname;
+            RealName.Text = otherName;
+            Nickname.Text = otherUsername;
 
             Console.WriteLine("Start chat: I, " + userLogged.Nickname + ", am starting a chat with " + otherUsername + " (real name: " + otherName + "), his address is: " + otherAddress + ", on port " + port + ", am I the host: " + isHost);
 
