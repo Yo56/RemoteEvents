@@ -12,6 +12,7 @@ namespace RemotingEvents.Common
 
         public event OnlineUsersChangedEvent OnlineUsersChanged;
         public event NewChatRequestEvent NewChatRequest;
+        public event OpenAcceptedChatRequestEvent OpenAcceptedChatRequest;
 
         #endregion
 
@@ -38,6 +39,11 @@ namespace RemotingEvents.Common
                 NewChatRequest(senderNickname, receiverNickname);
         }
 
+        public void LocallyHandleOpenAcceptedChatRequest(string senderNickname, string receiverNickname)
+        {
+            if (NewChatRequest != null)
+                OpenAcceptedChatRequest(senderNickname, receiverNickname);
+        }
         #endregion
 
     }

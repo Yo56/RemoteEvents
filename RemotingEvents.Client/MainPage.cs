@@ -26,6 +26,7 @@ namespace RemotingEvents.Client
         //delegate functions
         private delegate void InvokeDelegateOnlineUsersUpdate(Dictionary<string,string> users);
         private delegate void InvokeDelegateChatRequestUpdate(string senderNickname);
+        private delegate void InvokeDelegateOpenAcceptedChatRequest(string senderNickname);
 
         public MainPage(User userLogged, IServerObject server)
         {
@@ -45,11 +46,13 @@ namespace RemotingEvents.Client
             //Handle proxy
             eventProxy.OnlineUsersChanged += new OnlineUsersChangedEvent(EventProxy_OnlineUsersChanged);
             eventProxy.NewChatRequest += new NewChatRequestEvent(EventProxy_NewChatRequest);
+            eventProxy.OpenAcceptedChatRequest += new OpenAcceptedChatRequestEvent(EventProxy_OpenAcceptedChatRequest);
 
             //attach the proxy handle functions to Server events 
             remoteServer.OnlineUsersChanged += new OnlineUsersChangedEvent(eventProxy.LocallyHandleOnlineUsersChanged);
             remoteServer.NewChatRequest += new NewChatRequestEvent(eventProxy.LocallyHandleNewChatRequest);
-            
+            remoteServer.OpenAcceptedChatRequest += new OpenAcceptedChatRequestEvent(eventProxy.LocallyHandleOpenAcceptedChatRequest);
+
         }
 
         private void buttonLogOut_Click(object sender, EventArgs e) //MAYBE divide into 2 functions 
@@ -133,6 +136,7 @@ namespace RemotingEvents.Client
             chatPage.Show();
 
             //TODO : Make other user open his chatPage
+            remoteServer.makeOtherUserOpenChatPage(username, userLogged.Nickname);
 
             clickedButton.Click -= new EventHandler(this.Decline_Click);
             clickedButton.Parent.Dispose();
@@ -165,6 +169,30 @@ namespace RemotingEvents.Client
                 return;
             }
             
+        }
+
+        private void EventProxy_OpenAcceptedChatRequest(string senderNickname, string receiverNickname)
+        {
+
+            if (userLogged.Nickname.Equals(senderNickname))
+            {
+                Console.WriteLine("Client " + senderNickname + " received an ordeer to open a chat page, accepted by " + receiverNickname);
+                this.BeginInvoke(new InvokeDelegateOpenAcceptedChatRequest(OpenChatPage), new object[] { receiverNickname });
+                return;
+            }
+
+            
+
+        }
+
+        void OpenChatPage(string otheruserNickname)
+        {
+            Console.WriteLine("Opening chat between sender: " + otheruserNickname + " and me: " + userLogged.Nickname);
+            String name = remoteServer.GetRealNameFromUser(otheruserNickname);
+            String otherAddress = remoteServer.GetAddressFromOnlineUser(otheruserNickname);
+            int port = remoteServer.AllocatePort(userLogged.Nickname);
+            ChatPage chatPage = new ChatPage(userLogged, otheruserNickname, name, port, otherAddress, true);
+            chatPage.Show();
         }
         #endregion
 
@@ -256,5 +284,8 @@ namespace RemotingEvents.Client
         }
 
         #endregion
+
+
+        
     }
 }
