@@ -28,30 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.MessageToSend = new System.Windows.Forms.RichTextBox();
             this.CreateMessage = new System.Windows.Forms.Panel();
             this.Send = new System.Windows.Forms.Button();
             this.Messages = new System.Windows.Forms.FlowLayoutPanel();
             this.UserChatIdentification = new System.Windows.Forms.Panel();
-            this.Nickname = new System.Windows.Forms.Label();
             this.RealName = new System.Windows.Forms.Label();
+            this.Nickname = new System.Windows.Forms.Label();
             this.CreateMessage.SuspendLayout();
             this.UserChatIdentification.SuspendLayout();
             this.SuspendLayout();
             // 
-            // richTextBox1
+            // MessageToSend
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(17, 17);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(997, 69);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "";
+            this.MessageToSend.Location = new System.Drawing.Point(17, 17);
+            this.MessageToSend.Name = "MessageToSend";
+            this.MessageToSend.Size = new System.Drawing.Size(997, 69);
+            this.MessageToSend.TabIndex = 1;
+            this.MessageToSend.Text = "";
             // 
             // CreateMessage
             // 
             this.CreateMessage.BackColor = System.Drawing.SystemColors.Highlight;
             this.CreateMessage.Controls.Add(this.Send);
-            this.CreateMessage.Controls.Add(this.richTextBox1);
+            this.CreateMessage.Controls.Add(this.MessageToSend);
             this.CreateMessage.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.CreateMessage.Location = new System.Drawing.Point(11, 665);
             this.CreateMessage.Margin = new System.Windows.Forms.Padding(2);
@@ -69,6 +69,7 @@
             this.Send.TabIndex = 2;
             this.Send.Text = "Send";
             this.Send.UseVisualStyleBackColor = false;
+            this.Send.Click += new System.EventHandler(this.Send_Click);
             // 
             // Messages
             // 
@@ -89,16 +90,6 @@
             this.UserChatIdentification.Size = new System.Drawing.Size(1142, 102);
             this.UserChatIdentification.TabIndex = 4;
             // 
-            // Nickname
-            // 
-            this.Nickname.AutoSize = true;
-            this.Nickname.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Nickname.Location = new System.Drawing.Point(230, 31);
-            this.Nickname.Name = "Nickname";
-            this.Nickname.Size = new System.Drawing.Size(149, 32);
-            this.Nickname.TabIndex = 0;
-            this.Nickname.Text = "Nickname";
-            // 
             // RealName
             // 
             this.RealName.AutoSize = true;
@@ -108,6 +99,16 @@
             this.RealName.Size = new System.Drawing.Size(165, 32);
             this.RealName.TabIndex = 1;
             this.RealName.Text = "Real Name";
+            // 
+            // Nickname
+            // 
+            this.Nickname.AutoSize = true;
+            this.Nickname.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Nickname.Location = new System.Drawing.Point(230, 31);
+            this.Nickname.Name = "Nickname";
+            this.Nickname.Size = new System.Drawing.Size(149, 32);
+            this.Nickname.TabIndex = 0;
+            this.Nickname.Text = "Nickname";
             // 
             // ChatPage
             // 
@@ -128,7 +129,7 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox MessageToSend;
         private System.Windows.Forms.Panel CreateMessage;
         private System.Windows.Forms.Button Send;
         private System.Windows.Forms.FlowLayoutPanel Messages;
