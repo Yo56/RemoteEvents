@@ -29,6 +29,7 @@ namespace RemotingEvents.Server
 
         //Dictionary of used ports in each address
         Dictionary<String, List<int>> usedPortsByAddress;
+        Dictionary<String, int> lastAllocatedPort;
 
         #endregion
 
@@ -203,7 +204,14 @@ namespace RemotingEvents.Server
 
             usedPorts.Add(port);
 
+            lastAllocatedPort[nickname] = port;
+
             return port;
+        }
+
+        public int GetLastAllocatedPort(String nickname)
+        {
+            return lastAllocatedPort[nickname];
         }
 
         public int GetFreePort(String nickname)
@@ -291,6 +299,7 @@ namespace RemotingEvents.Server
 
             onlineUsers = new Dictionary<String, String>();
             usedPortsByAddress = new Dictionary<string, List<int>>();
+            lastAllocatedPort = new Dictionary<String, int>();
 
             StartServer(1234);
 

@@ -28,6 +28,7 @@ namespace RemotingEvents.Common
         void addUserToOnlineUsers(String username, String ipAddress);
         string GetAddressFromOnlineUser(String username);
         int AllocatePort(String nickname);
+        int GetLastAllocatedPort(String nickname);
         int GetFreePort(String nickname);
         bool IsPortFree(String userAddress, int port);
         Dictionary<string, string> getOnlineUsers();

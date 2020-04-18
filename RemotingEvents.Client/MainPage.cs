@@ -26,7 +26,7 @@ namespace RemotingEvents.Client
         //delegate functions
         private delegate void InvokeDelegateOnlineUsersUpdate(Dictionary<string,string> users);
         private delegate void InvokeDelegateChatRequestUpdate(string senderNickname);
-        private delegate void InvokeDelegateOpenAcceptedChatRequest(string senderNickname);
+        private delegate void InvokeDelegateOpenAcceptedChatRequest(string senderNickname, Boolean isAcceptingInvite);
 
         public MainPage(User userLogged, IServerObject server)
         {
@@ -129,7 +129,7 @@ namespace RemotingEvents.Client
         {
             Button clickedButton = (Button)sender;
             String username = clickedButton.Parent.Name;
-            OpenChatPage(username);
+            OpenChatPage(username, true);
 
             //TODO : Make other user open his chatPage
             remoteServer.makeOtherUserOpenChatPage(username, userLogged.Nickname);
@@ -173,7 +173,7 @@ namespace RemotingEvents.Client
             if (userLogged.Nickname.Equals(senderNickname))
             {
                 Console.WriteLine("Client " + senderNickname + " received an ordeer to open a chat page, accepted by " + receiverNickname);
-                this.BeginInvoke(new InvokeDelegateOpenAcceptedChatRequest(OpenChatPage), new object[] { receiverNickname });
+                this.BeginInvoke(new InvokeDelegateOpenAcceptedChatRequest(OpenChatPage), new object[] { receiverNickname , false });
                 return;
             }
 
@@ -181,13 +181,26 @@ namespace RemotingEvents.Client
 
         }
 
-        void OpenChatPage(string otheruserNickname)
+        void OpenChatPage(string otheruserNickname, Boolean isAcceptingInvitation)
         {
+            int otherPort;
+
             Console.WriteLine("Opening chat between sender: " + otheruserNickname + " and me: " + userLogged.Nickname);
             String name = remoteServer.GetRealNameFromUser(otheruserNickname);
             String otherAddress = remoteServer.GetAddressFromOnlineUser(otheruserNickname);
             int port = remoteServer.AllocatePort(userLogged.Nickname);
-            ChatPage chatPage = new ChatPage(userLogged, otheruserNickname, name, port, otherAddress);
+
+
+            if (isAcceptingInvitation)
+            {
+                otherPort = remoteServer.GetFreePort(otheruserNickname);
+            }
+            else
+            {
+                otherPort = remoteServer.GetLastAllocatedPort(otheruserNickname);
+            }
+
+            ChatPage chatPage = new ChatPage(userLogged, otheruserNickname, name, port, otherAddress, otherPort);
             chatPage.Show();
         }
         #endregion

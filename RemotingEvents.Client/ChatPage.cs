@@ -18,14 +18,14 @@ namespace RemotingEvents.Client
     {
         User userLogged;
 
-        public ChatPage(User userLogged,  String otherUsername, String otherName, int port, String otherAddress)//will need other user's details
+        public ChatPage(User userLogged,  String otherUsername, String otherName, int port, String otherAddress, int otherPort)
         {
             this.userLogged = userLogged;
             InitializeComponent();
             RealName.Text = otherName;
             Nickname.Text = otherUsername;
 
-            Console.WriteLine("Start chat: I, " + userLogged.Nickname + ", am starting a chat with " + otherUsername + " (real name: " + otherName + "), his address is: " + otherAddress + ", on port " + port);
+            Console.WriteLine("Start chat: I, " + userLogged.Nickname + ", am starting a chat with " + otherUsername + " (real name: " + otherName + "), his address is: " + otherAddress + " , and his port:" + otherPort + ", my listening port: " + port);
 
         }
     }
