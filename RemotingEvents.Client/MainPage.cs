@@ -129,11 +129,7 @@ namespace RemotingEvents.Client
         {
             Button clickedButton = (Button)sender;
             String username = clickedButton.Parent.Name;
-            String name = remoteServer.GetRealNameFromUser(username);
-            String otherAddress = remoteServer.GetAddressFromOnlineUser(username);
-            int port = remoteServer.AllocatePort(userLogged.Nickname);
-            ChatPage chatPage = new ChatPage(userLogged, username, name, port, otherAddress, true);
-            chatPage.Show();
+            OpenChatPage(username);
 
             //TODO : Make other user open his chatPage
             remoteServer.makeOtherUserOpenChatPage(username, userLogged.Nickname);
@@ -191,7 +187,7 @@ namespace RemotingEvents.Client
             String name = remoteServer.GetRealNameFromUser(otheruserNickname);
             String otherAddress = remoteServer.GetAddressFromOnlineUser(otheruserNickname);
             int port = remoteServer.AllocatePort(userLogged.Nickname);
-            ChatPage chatPage = new ChatPage(userLogged, otheruserNickname, name, port, otherAddress, true);
+            ChatPage chatPage = new ChatPage(userLogged, otheruserNickname, name, port, otherAddress);
             chatPage.Show();
         }
         #endregion
