@@ -19,16 +19,20 @@ namespace RemotingEvents.Client
 {
     public partial class ChatPage : Form
     {
-        User userLogged;
+        private User userLogged;
+        private MainPage mp;
+        public string otherUsername;
 
         Socket sck;
         EndPoint epLocal, epRemote;
 
-        
 
-        public ChatPage(User userLogged,  String otherUsername, String otherName, int port, String otherAddress, int otherPort)
+
+        public ChatPage(MainPage mp, User userLogged,  String otherUsername, String otherName, int port, String otherAddress, int otherPort)
         {
             this.userLogged = userLogged;
+            this.mp = mp;
+            this.otherUsername = otherUsername;
             InitializeComponent();
             RealName.Text = otherName;
             Nickname.Text = otherUsername;
@@ -173,6 +177,13 @@ namespace RemotingEvents.Client
                     Messages.ScrollControlIntoView(windowSizedPanel);
                 }
             }
+        }
+
+        private void ChatPage_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Console.WriteLine("Chat page: Closing " + userLogged.Nickname + "'s chat page with " + otherUsername);
+            Console.WriteLine("Chat page: Telling Main Page to close " + otherUsername + "'s chat page");
+            mp.CloseOtherUserChatPage(otherUsername);
         }
 
         private static string GetLocalIPAddress()

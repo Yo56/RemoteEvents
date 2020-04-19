@@ -18,6 +18,7 @@ namespace RemotingEvents.Client
     {
         //DATA
         User userLogged;
+        Dictionary<String, List<ChatPage>> activeChatPages;
 
         //Server component
         EventProxy eventProxy;
@@ -27,11 +28,13 @@ namespace RemotingEvents.Client
         private delegate void InvokeDelegateOnlineUsersUpdate(Dictionary<string,string> users);
         private delegate void InvokeDelegateChatRequestUpdate(string senderNickname);
         private delegate void InvokeDelegateOpenAcceptedChatRequest(string senderNickname, Boolean isAcceptingInvite);
+        private delegate void InvokeDelegateCloseOtherUserChatPageUpdate(string senderNickname);
 
         public MainPage(User userLogged, IServerObject server)
         {
             //get user from loginPage
             this.userLogged = userLogged;
+            this.activeChatPages = new Dictionary<string, List<ChatPage>>();
             InitializeComponent();
             labelUserFullName.Text = userLogged.Name;
             labelUserNickname.Text = userLogged.Nickname;
@@ -47,11 +50,13 @@ namespace RemotingEvents.Client
             eventProxy.OnlineUsersChanged += new OnlineUsersChangedEvent(EventProxy_OnlineUsersChanged);
             eventProxy.NewChatRequest += new NewChatRequestEvent(EventProxy_NewChatRequest);
             eventProxy.OpenAcceptedChatRequest += new OpenAcceptedChatRequestEvent(EventProxy_OpenAcceptedChatRequest);
+            eventProxy.CloseOtherUserChatPage += new CloseOtherUserChatPageEvent(EventProxy_CloseOtherUserChatPage);
 
             //attach the proxy handle functions to Server events 
             remoteServer.OnlineUsersChanged += new OnlineUsersChangedEvent(eventProxy.LocallyHandleOnlineUsersChanged);
             remoteServer.NewChatRequest += new NewChatRequestEvent(eventProxy.LocallyHandleNewChatRequest);
             remoteServer.OpenAcceptedChatRequest += new OpenAcceptedChatRequestEvent(eventProxy.LocallyHandleOpenAcceptedChatRequest);
+            remoteServer.CloseOtherUserChatPage += new CloseOtherUserChatPageEvent(eventProxy.LocallyHandleCloseOtherUserChatPageRequest);
 
         }
 
@@ -181,7 +186,20 @@ namespace RemotingEvents.Client
 
         }
 
-        void OpenChatPage(string otheruserNickname, Boolean isAcceptingInvitation)
+        private void EventProxy_CloseOtherUserChatPage(string senderNickname, string receiverNickname)
+        {
+            //Console.WriteLine("Client received a Chat Request but doesn't know for whom it is intended");
+
+            if (userLogged.Nickname.Equals(receiverNickname))
+            {
+                Console.WriteLine("Client received an order to close Chat Page from " + senderNickname);
+                this.BeginInvoke(new InvokeDelegateCloseOtherUserChatPageUpdate(CloseChatPage), new object[] { senderNickname });
+                return;
+            }
+
+        }
+
+        private void OpenChatPage(string otheruserNickname, Boolean isAcceptingInvitation)
         {
             int otherPort;
 
@@ -200,9 +218,39 @@ namespace RemotingEvents.Client
                 otherPort = remoteServer.GetLastAllocatedPort(otheruserNickname);
             }
 
-            ChatPage chatPage = new ChatPage(userLogged, otheruserNickname, name, port, otherAddress, otherPort);
+            ChatPage chatPage = new ChatPage(this, userLogged, otheruserNickname, name, port, otherAddress, otherPort);
+            if(!activeChatPages.ContainsKey(otheruserNickname))
+            {
+                activeChatPages[otheruserNickname] = new List<ChatPage>();
+            }
+           
+
+            activeChatPages[otheruserNickname].Add(chatPage);
             chatPage.Show();
         }
+
+        public void CloseChatPage(string otheruserNickname)
+        {
+            Console.WriteLine("Main Page after remote event: Because " + otheruserNickname + " closed his chat with me, " + otheruserNickname + " I'm going to close too");
+
+            foreach(ChatPage cp in activeChatPages[otheruserNickname])
+            {
+                if(cp.otherUsername == otheruserNickname)
+                {
+                    cp.Close();
+                }
+            }
+
+        }
+
+        public void CloseOtherUserChatPage(string otheruserNickname)
+        {
+            Console.WriteLine("Main Page: Because " + userLogged.Nickname + "'s chat page with " + otheruserNickname + " was closed");
+            Console.WriteLine("Main Page: Will tell " + otheruserNickname + " to close his chat page with " + userLogged.Nickname);
+            
+            remoteServer.makeOtherUserCloseChatPage(userLogged.Nickname, otheruserNickname);
+        }
+
         #endregion
 
 

@@ -13,6 +13,7 @@ namespace RemotingEvents.Common
         public event OnlineUsersChangedEvent OnlineUsersChanged;
         public event NewChatRequestEvent NewChatRequest;
         public event OpenAcceptedChatRequestEvent OpenAcceptedChatRequest;
+        public event CloseOtherUserChatPageEvent CloseOtherUserChatPage;
 
         #endregion
 
@@ -41,8 +42,14 @@ namespace RemotingEvents.Common
 
         public void LocallyHandleOpenAcceptedChatRequest(string senderNickname, string receiverNickname)
         {
-            if (NewChatRequest != null)
+            if (OpenAcceptedChatRequest != null)
                 OpenAcceptedChatRequest(senderNickname, receiverNickname);
+        }
+
+        public void LocallyHandleCloseOtherUserChatPageRequest(string senderNickname, string receiverNickname)
+        {
+            if (CloseOtherUserChatPage != null)
+                CloseOtherUserChatPage(senderNickname, receiverNickname);
         }
         #endregion
 

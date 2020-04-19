@@ -128,6 +128,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ChatPage";
             this.Text = "ChatPage";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ChatPage_FormClosed);
             this.CreateMessage.ResumeLayout(false);
             this.UserChatIdentification.ResumeLayout(false);
             this.UserChatIdentification.PerformLayout();
