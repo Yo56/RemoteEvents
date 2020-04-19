@@ -13,6 +13,7 @@ namespace RemotingEvents.Common
         event OnlineUsersChangedEvent OnlineUsersChanged;
         event NewChatRequestEvent NewChatRequest;
         event OpenAcceptedChatRequestEvent OpenAcceptedChatRequest;
+        event CloseOtherUserChatPageEvent CloseOtherUserChatPage;
 
         #endregion
 

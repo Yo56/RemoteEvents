@@ -122,6 +122,7 @@
             this.Controls.Add(this.CreateMessage);
             this.Name = "ChatPage";
             this.Text = "ChatPage";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ChatPage_FormClosed);
             this.CreateMessage.ResumeLayout(false);
             this.UserChatIdentification.ResumeLayout(false);
             this.UserChatIdentification.PerformLayout();

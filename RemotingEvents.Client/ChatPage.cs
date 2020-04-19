@@ -154,6 +154,12 @@ namespace RemotingEvents.Client
             }
         }
 
+        private void ChatPage_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Console.WriteLine("Chat Page closed");
+            //TO DO: Close the other user chat page
+        }
+
         private static string GetLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());

@@ -18,6 +18,7 @@ namespace RemotingEvents.Client
     {
         //DATA
         User userLogged;
+        Dictionary<String, ChatPage> chatPages;
 
         //Server component
         EventProxy eventProxy;
@@ -27,11 +28,13 @@ namespace RemotingEvents.Client
         private delegate void InvokeDelegateOnlineUsersUpdate(Dictionary<string,string> users);
         private delegate void InvokeDelegateChatRequestUpdate(string senderNickname);
         private delegate void InvokeDelegateOpenAcceptedChatRequest(string senderNickname, Boolean isAcceptingInvite);
+        private delegate void InvokeDelegateCloseOtherUserChatPage(string senderNickname);
 
         public MainPage(User userLogged, IServerObject server)
         {
             //get user from loginPage
             this.userLogged = userLogged;
+            this.chatPages = new Dictionary<string, ChatPage>();
             InitializeComponent();
             labelUserFullName.Text = userLogged.Name;
             labelUserNickname.Text = userLogged.Nickname;
@@ -47,11 +50,13 @@ namespace RemotingEvents.Client
             eventProxy.OnlineUsersChanged += new OnlineUsersChangedEvent(EventProxy_OnlineUsersChanged);
             eventProxy.NewChatRequest += new NewChatRequestEvent(EventProxy_NewChatRequest);
             eventProxy.OpenAcceptedChatRequest += new OpenAcceptedChatRequestEvent(EventProxy_OpenAcceptedChatRequest);
+            eventProxy.CloseOtherUserChatPage += new CloseOtherUserChatPageEvent(EventProxy_CloseOtherUserChatPage);
 
             //attach the proxy handle functions to Server events 
             remoteServer.OnlineUsersChanged += new OnlineUsersChangedEvent(eventProxy.LocallyHandleOnlineUsersChanged);
             remoteServer.NewChatRequest += new NewChatRequestEvent(eventProxy.LocallyHandleNewChatRequest);
             remoteServer.OpenAcceptedChatRequest += new OpenAcceptedChatRequestEvent(eventProxy.LocallyHandleOpenAcceptedChatRequest);
+            remoteServer.CloseOtherUserChatPage += new CloseOtherUserChatPageEvent(eventProxy.LocallyHandleCloseOtherUserChatPageRequest);
 
         }
 
@@ -181,7 +186,21 @@ namespace RemotingEvents.Client
 
         }
 
-        void OpenChatPage(string otheruserNickname, Boolean isAcceptingInvitation)
+        private void EventProxy_CloseOtherUserChatPage(string senderNickname, string receiverNickname)
+        {
+
+            if (userLogged.Nickname.Equals(receiverNickname))
+            {
+                Console.WriteLine("Client " + senderNickname + " sent message to close a chat page, here on " + receiverNickname);
+                this.BeginInvoke(new InvokeDelegateCloseOtherUserChatPage(CloseChatPage), new object[] { senderNickname });
+                return;
+            }
+
+
+
+        }
+
+        private void OpenChatPage(string otheruserNickname, Boolean isAcceptingInvitation)
         {
             int otherPort;
 
@@ -201,7 +220,14 @@ namespace RemotingEvents.Client
             }
 
             ChatPage chatPage = new ChatPage(userLogged, otheruserNickname, name, port, otherAddress, otherPort);
+            chatPages[otheruserNickname] = chatPage;
             chatPage.Show();
+        }
+
+        public void CloseChatPage(string otheruserNickname)
+        {
+            Console.WriteLine("Closing chat page from " + otheruserNickname);
+            chatPages[otheruserNickname].Close();
         }
         #endregion
 

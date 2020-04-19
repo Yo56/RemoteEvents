@@ -40,6 +40,7 @@ namespace RemotingEvents.Server
         public event OnlineUsersChangedEvent OnlineUsersChanged;
         public event NewChatRequestEvent NewChatRequest;
         public event OpenAcceptedChatRequestEvent OpenAcceptedChatRequest;
+        public event CloseOtherUserChatPageEvent CloseOtherUserChatPage;
 
         public string HelloWorld()
         {
@@ -283,6 +284,11 @@ namespace RemotingEvents.Server
             safeInvokeOpenAcceptedChatRequest(senderNickname, receiverUsername);
         }
 
+        public void makeOtherUserCloseChatPage(string senderNickname, string receiverUsername)
+        {
+            safeInvokeCloseOtherUserChatPage(senderNickname, receiverUsername);
+        }
+
         #endregion
 
         #region server configuration
@@ -438,6 +444,33 @@ namespace RemotingEvents.Server
                     //Could not reach the destination, so remove it
                     //from the list
                     OpenAcceptedChatRequest -= listener;
+                }
+            }
+        }
+
+        private void safeInvokeCloseOtherUserChatPage(string senderNickname, string receiverNickname)
+        {
+            if (!serverActive)
+                return;
+
+            if (CloseOtherUserChatPage == null)
+                return;         //No Listeners
+
+            CloseOtherUserChatPageEvent listener = null;
+            Delegate[] dels = OpenAcceptedChatRequest.GetInvocationList();
+
+            foreach (Delegate del in dels)
+            {
+                try
+                {
+                    listener = (CloseOtherUserChatPageEvent)del;
+                    listener.Invoke(senderNickname, receiverNickname);
+                }
+                catch (Exception ex)
+                {
+                    //Could not reach the destination, so remove it
+                    //from the list
+                    CloseOtherUserChatPage -= listener;
                 }
             }
         }
