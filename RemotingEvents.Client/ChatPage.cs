@@ -123,33 +123,54 @@ namespace RemotingEvents.Client
                 if (message.Length > 0)
                 {
                     Console.WriteLine("Sowing new message: #" + Messages.Controls.Count);
+                    Panel windowSizedPanel = new Panel();
+                    windowSizedPanel.Size = new Size(700, 50);
 
                     Panel messagePanel = new Panel();
                     messagePanel.Name = message;
+                    messagePanel.Size = new Size(420, 50);
 
-                    messagePanel.Size = new Size(700, 50);//Y needs to be dynamic to fit length of the text
+                    windowSizedPanel.Controls.Add(messagePanel);
 
                     TextBox text = new TextBox();
+                    text.Multiline = true;
+                    text.ReadOnly = true;
+                    text.BorderStyle = BorderStyle.None;
                     text.Text = message;
-                    text.Size = new Size(450, 50);//Y needs to be dynamic to fit length of the text
+                    text.Size = new Size(400, 50);
 
+                    SizeF MessageSize = text.CreateGraphics()
+                                .MeasureString(text.Text,
+                                                text.Font,
+                                                text.Width,
+                                                new StringFormat(0));
+
+                    //resize 
+                    text.Height = (int)MessageSize.Height;
+                    messagePanel.Height = (int)MessageSize.Height;
+                    windowSizedPanel.Height = (int)MessageSize.Height;
 
                     if (isReceiving)
                     {
-                        messagePanel.BackColor = Color.FromArgb(204, 233, 255);
-                        text.Location = new Point(100, 0);
+                        Color receivingColor = Color.FromArgb(204, 233, 255);
+                        messagePanel.BackColor = receivingColor;
+                        text.BackColor = receivingColor;
+                        text.Location = new Point(10, 0);
                     }
                     else
                     {
-                        messagePanel.BackColor = Color.FromArgb(33, 149, 237);
-                        text.Location = new Point(150, 0);
-                    }
+                        Color sendingColor = Color.FromArgb(33, 149, 237);
+                        messagePanel.BackColor = sendingColor;
+                        text.BackColor = sendingColor;
+                        text.Location = new Point(10, 0);
 
+                        messagePanel.Left += 280;
+                    }
 
                     messagePanel.Controls.Add(text);
 
-                    Messages.Controls.Add(messagePanel);
-                    Messages.ScrollControlIntoView(messagePanel);
+                    Messages.Controls.Add(windowSizedPanel);
+                    Messages.ScrollControlIntoView(windowSizedPanel);
                 }
             }
         }
