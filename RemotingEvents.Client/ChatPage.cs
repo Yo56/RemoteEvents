@@ -77,7 +77,7 @@ namespace RemotingEvents.Client
                     ASCIIEncoding eEncoding = new ASCIIEncoding();
                     string receivedMessage = eEncoding.GetString(receivedData);
 
-                    showNewMessage(receivedMessage);
+                    showNewMessage(receivedMessage, true);
                 }
 
                 byte[] buffer = new byte[262200];
@@ -101,7 +101,7 @@ namespace RemotingEvents.Client
 
                 sck.Send(msg);
 
-                showNewMessage(MessageToSend.Text);
+                showNewMessage(MessageToSend.Text, false);
                 MessageToSend.Clear();
             }
             catch (Exception ex)
@@ -111,29 +111,46 @@ namespace RemotingEvents.Client
             }
         }
 
-        public delegate void showNewMessageDelegate(String message);
-        public void showNewMessage(String message)
+        public delegate void showNewMessageDelegate(String message, Boolean isReceiving);
+        public void showNewMessage(String message, Boolean isReceiving)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new showNewMessageDelegate(showNewMessage), message);
+                this.Invoke(new showNewMessageDelegate(showNewMessage), message, isReceiving);
             }
             else
             {
-                Console.WriteLine("Sowing new message: #" + Messages.Controls.Count);
+                if (message.Length > 0)
+                {
+                    Console.WriteLine("Sowing new message: #" + Messages.Controls.Count);
 
-                Panel messagePanel = new Panel();
-                messagePanel.Name = message;
-                messagePanel.BackColor = Color.FromArgb(204, 233, 255);
-                messagePanel.Size = new Size(500, 50);//Y needs to be dynamic to fit length of the text
+                    Panel messagePanel = new Panel();
+                    messagePanel.Name = message;
 
-                TextBox text = new TextBox();
-                text.Text = message;
+                    messagePanel.Size = new Size(700, 50);//Y needs to be dynamic to fit length of the text
+
+                    TextBox text = new TextBox();
+                    text.Text = message;
+                    text.Size = new Size(450, 50);//Y needs to be dynamic to fit length of the text
 
 
-                messagePanel.Controls.Add(text);
+                    if (isReceiving)
+                    {
+                        messagePanel.BackColor = Color.FromArgb(204, 233, 255);
+                        text.Location = new Point(100, 0);
+                    }
+                    else
+                    {
+                        messagePanel.BackColor = Color.FromArgb(33, 149, 237);
+                        text.Location = new Point(150, 0);
+                    }
 
-                Messages.Controls.Add(messagePanel);
+
+                    messagePanel.Controls.Add(text);
+
+                    Messages.Controls.Add(messagePanel);
+                    Messages.ScrollControlIntoView(messagePanel);
+                }
             }
         }
 

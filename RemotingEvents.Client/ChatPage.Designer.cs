@@ -73,9 +73,11 @@
             // 
             // Messages
             // 
-            this.Messages.Location = new System.Drawing.Point(12, 120);
+            this.Messages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Messages.AutoScroll = true;
+            this.Messages.Location = new System.Drawing.Point(47, 120);
             this.Messages.Name = "Messages";
-            this.Messages.Size = new System.Drawing.Size(1140, 540);
+            this.Messages.Size = new System.Drawing.Size(1105, 540);
             this.Messages.TabIndex = 3;
             // 
             // UserChatIdentification
