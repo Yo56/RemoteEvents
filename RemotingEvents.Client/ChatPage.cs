@@ -125,11 +125,15 @@ namespace RemotingEvents.Client
                 Panel messagePanel = new Panel();
                 messagePanel.Name = message;
                 messagePanel.BackColor = Color.FromArgb(204, 233, 255);
-                messagePanel.Size = new Size(325, 100);
+                messagePanel.Size = new Size(500, 50);//Y needs to be dynamic to fit length of the text
+
+                TextBox text = new TextBox();
+                text.Text = message;
+
+
+                messagePanel.Controls.Add(text);
 
                 Messages.Controls.Add(messagePanel);
-                //messagePanel.Paint += (ss, ee) => { ee.Graphics.DrawString(message, Font, Brushes.Black, 22, 18); };
-                //messagePanel.Invalidate();
             }
         }
 
