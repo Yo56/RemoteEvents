@@ -16,7 +16,6 @@ namespace RemotingEvents.Server
         #region Fields
 
         private TcpServerChannel serverChannel;
-        private int tcpPort;
         private ObjRef internalRef;
         private Boolean serverActive = false;
         private static string serverURI = "serverExample.Rem";
@@ -62,7 +61,6 @@ namespace RemotingEvents.Server
                 Console.WriteLine("User " + nickname + " not found.");
                 return false;
             }
-            return false;
         }
 
         //method that returns an user from a nickname
@@ -79,7 +77,6 @@ namespace RemotingEvents.Server
                 Console.WriteLine("User " + nickname + " not found. Can't get it");
                 return null;
             }
-            return null;
         }
 
         public string GetRealNameFromUser(String username)
@@ -116,7 +113,6 @@ namespace RemotingEvents.Server
                 Console.WriteLine("User " + nickname + " not found. Can't authenticate it");
                 return false;
             }
-            return false;
         }
 
         //Add an account to registeredUsers
@@ -259,7 +255,6 @@ namespace RemotingEvents.Server
 
         public Dictionary<string, string> getOnlineUsers()
         {
-            Console.WriteLine("onlineUsers dictionnary returned");
             return onlineUsers;
         }
 
@@ -267,7 +262,6 @@ namespace RemotingEvents.Server
         {
             if (onlineUsers.ContainsKey(receiverUsername))
             {
-                Console.WriteLine("New chat request from " + senderNickname + " to " + receiverUsername);
                 safeInvokeNewChatRequest(senderNickname, receiverUsername);
                 return true;
             }
@@ -334,15 +328,16 @@ namespace RemotingEvents.Server
                 internalRef = RemotingServices.Marshal(this, props["name"].ToString());
                 serverActive = true;
                 Console.WriteLine("[Server active]\n");
-                //Console.ReadLine();
             }
             catch (RemotingException re)
             {
                 //Could not start the server because of a remoting exception
+                Console.WriteLine(re.ToString());
             }
             catch (Exception ex)
             {
                 //Could not start the server because of some other exception
+                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -359,7 +354,7 @@ namespace RemotingEvents.Server
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.ToString());
             }
         }
         #endregion
@@ -386,6 +381,7 @@ namespace RemotingEvents.Server
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     OnlineUsersChanged -= listener;
@@ -414,6 +410,7 @@ namespace RemotingEvents.Server
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     NewChatRequest -= listener;
@@ -441,6 +438,7 @@ namespace RemotingEvents.Server
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     OpenAcceptedChatRequest -= listener;
@@ -468,6 +466,7 @@ namespace RemotingEvents.Server
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     CloseOtherUserChatPage -= listener;

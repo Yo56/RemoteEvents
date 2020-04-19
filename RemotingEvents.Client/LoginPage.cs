@@ -15,15 +15,13 @@ namespace RemotingEvents.Client
     {
         //Server component
         String ipAddress = GetLocalIPAddress();
-        TcpClientChannel channel;
 
         IServerObject remoteServer;
         
         TcpChannel tcpChan;
         BinaryClientFormatterSinkProvider clientProv;
         BinaryServerFormatterSinkProvider serverProv;
-        private string serverURI = "tcp://localhost:1234/serverExample.Rem";    
-        private bool connected = false;
+        private string serverURI = "tcp://localhost:1234/serverExample.Rem";   
 
         public LoginPage()
         {
@@ -40,31 +38,19 @@ namespace RemotingEvents.Client
             props["port"] = 0;      //First available port
 
             tcpChan = new TcpChannel(props, clientProv, serverProv);
-            ChannelServices.RegisterChannel(tcpChan);
+            ChannelServices.RegisterChannel(tcpChan, false);
 
             RemotingConfiguration.RegisterWellKnownClientType(new WellKnownClientTypeEntry(typeof(IServerObject), serverURI));
 
             try
             {
                 remoteServer = (IServerObject)Activator.GetObject(typeof(IServerObject), serverURI);
-                connected = true;
                 Console.WriteLine(remoteServer.HelloWorld());
             }
             catch (Exception ex)
             {
-                connected = false;
                 Console.WriteLine("Could not connect: " + ex.Message);
             }
-            /* OLD
-            //init server connection
-            channel = new TcpClientChannel();
-            ChannelServices.RegisterChannel(channel, false);
-            RemotingConfiguration.RegisterWellKnownClientType(
-            typeof(ServerData), "tcp://localhost:1235/ServerData");
-            
-            sd = new ServerData();
-            Console.WriteLine(sd.Hello());
-            */
         }
 
 

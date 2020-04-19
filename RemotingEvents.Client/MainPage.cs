@@ -73,10 +73,6 @@ namespace RemotingEvents.Client
         #region Chat Request
         /////////////////// CHAT REQUEST MANAGEMENT //////////////////////////
 
-        private void TempSimulateNewChatRequest_Click(object sender, EventArgs e)
-        {
-            GenerateNewChatRequestRow("user2");
-        }
 
         private void GenerateNewChatRequestRow(String username)
         {
@@ -135,15 +131,10 @@ namespace RemotingEvents.Client
             Button clickedButton = (Button)sender;
             String username = clickedButton.Parent.Name;
             OpenChatPage(username, true);
-
-            //TODO : Make other user open his chatPage
             remoteServer.makeOtherUserOpenChatPage(username, userLogged.Nickname);
 
             clickedButton.Click -= new EventHandler(this.Decline_Click);
             clickedButton.Parent.Dispose();
-            //Local only for now
-            //Might need to be comunicated and handled by the server later
-            Console.WriteLine("Accepted invitation from " + username);
         }
 
         private void Decline_Click(object sender, EventArgs e)
@@ -152,20 +143,14 @@ namespace RemotingEvents.Client
             String username = clickedButton.Parent.Name;
             clickedButton.Click -= new EventHandler(this.Decline_Click);
             clickedButton.Parent.Dispose();
-            //Local only for now
-            //Might need to be comunicated and handled by the server later
-            Console.WriteLine("Declined invitation from " + username);
 
         }
 
         //method in relation with EventProxy
         private void EventProxy_NewChatRequest(string senderNickname, string receiverNickname)
-        {
-            //Console.WriteLine("Client received a Chat Request but doesn't know for whom it is intended");
-            
+        {            
             if(userLogged.Nickname.Equals(receiverNickname))
             {
-                Console.WriteLine("Client received a Chat Request from "+senderNickname);
                 this.BeginInvoke(new InvokeDelegateChatRequestUpdate(GenerateNewChatRequestRow), new object[] { senderNickname });
                 return;
             }
@@ -177,7 +162,6 @@ namespace RemotingEvents.Client
 
             if (userLogged.Nickname.Equals(senderNickname))
             {
-                Console.WriteLine("Client " + senderNickname + " received an ordeer to open a chat page, accepted by " + receiverNickname);
                 this.BeginInvoke(new InvokeDelegateOpenAcceptedChatRequest(OpenChatPage), new object[] { receiverNickname , false });
                 return;
             }
@@ -188,11 +172,8 @@ namespace RemotingEvents.Client
 
         private void EventProxy_CloseOtherUserChatPage(string senderNickname, string receiverNickname)
         {
-            //Console.WriteLine("Client received a Chat Request but doesn't know for whom it is intended");
-
             if (userLogged.Nickname.Equals(receiverNickname))
             {
-                Console.WriteLine("Client received an order to close Chat Page from " + senderNickname);
                 this.BeginInvoke(new InvokeDelegateCloseOtherUserChatPageUpdate(CloseChatPage), new object[] { senderNickname });
                 return;
             }
@@ -203,7 +184,6 @@ namespace RemotingEvents.Client
         {
             int otherPort;
 
-            Console.WriteLine("Opening chat between sender: " + otheruserNickname + " and me: " + userLogged.Nickname);
             String name = remoteServer.GetRealNameFromUser(otheruserNickname);
             String otherAddress = remoteServer.GetAddressFromOnlineUser(otheruserNickname);
             int port = remoteServer.AllocatePort(userLogged.Nickname);
@@ -231,8 +211,6 @@ namespace RemotingEvents.Client
 
         public void CloseChatPage(string otheruserNickname)
         {
-            Console.WriteLine("Main Page after remote event: Because " + otheruserNickname + " closed his chat with me, " + otheruserNickname + " I'm going to close too");
-
             foreach(ChatPage cp in activeChatPages[otheruserNickname])
             {
                 if(cp.otherUsername == otheruserNickname)
@@ -244,10 +222,7 @@ namespace RemotingEvents.Client
         }
 
         public void CloseOtherUserChatPage(string otheruserNickname)
-        {
-            Console.WriteLine("Main Page: Because " + userLogged.Nickname + "'s chat page with " + otheruserNickname + " was closed");
-            Console.WriteLine("Main Page: Will tell " + otheruserNickname + " to close his chat page with " + userLogged.Nickname);
-            
+        {            
             remoteServer.makeOtherUserCloseChatPage(userLogged.Nickname, otheruserNickname);
         }
 
@@ -262,7 +237,7 @@ namespace RemotingEvents.Client
         // method in relation with EventProxy
         private void EventProxy_OnlineUsersChanged(Dictionary<string,string> listOfOnlineUsers)
         {
-            Console.WriteLine("Client received an update of OnlineUsers !");
+            Console.WriteLine("Client received an update of OnlineUsers!");
             RefreshOnlineUsersDisplay(listOfOnlineUsers);
         }
 
@@ -293,8 +268,6 @@ namespace RemotingEvents.Client
         //method that creates a online user row
         private void GenerateActiveUserRow(String username)
         {
-            Console.WriteLine("Creating new activeUsersFlowLayoutPanel : " + activeUsersFlowLayoutPanel.Controls.Count);
-
             Panel onlineUserPanel = new Panel();
             onlineUserPanel.Name = username;
             onlineUserPanel.BackColor = Color.FromArgb(204, 233, 255);

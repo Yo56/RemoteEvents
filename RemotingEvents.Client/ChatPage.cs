@@ -78,7 +78,7 @@ namespace RemotingEvents.Client
 
                     receivedData = (byte[])aResult.AsyncState;
 
-                    ASCIIEncoding eEncoding = new ASCIIEncoding();
+                    UTF8Encoding eEncoding = new UTF8Encoding();
                     string receivedMessage = eEncoding.GetString(receivedData);
 
 
@@ -100,13 +100,14 @@ namespace RemotingEvents.Client
         {
             try
             {
-                System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
+                System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
                 byte[] msg = new byte[262200];
                 msg = enc.GetBytes(MessageToSend.Text);
                 sck.Send(msg);
 
                 showNewMessage(MessageToSend.Text, false);
                 MessageToSend.Clear();
+                MessageToSend.Focus();
             }
             catch (Exception ex)
             {
@@ -126,8 +127,6 @@ namespace RemotingEvents.Client
             {
                 if (message.Length > 0)
                 {
-                    Console.WriteLine("Sowing new message: #" + Messages.Controls.Count);
-
                     Panel windowSizedPanel = new Panel();
                     windowSizedPanel.Size = new Size(700, 50);
 
