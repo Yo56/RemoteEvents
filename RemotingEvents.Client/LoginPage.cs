@@ -25,6 +25,7 @@ namespace RemotingEvents.Client
 
         public LoginPage()
         {
+            Text = "Chat Service Login/Register";
             Console.WriteLine("Client starting ...");
             InitializeComponent();
 

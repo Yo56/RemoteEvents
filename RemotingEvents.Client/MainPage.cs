@@ -32,6 +32,7 @@ namespace RemotingEvents.Client
 
         public MainPage(User userLogged, IServerObject server)
         {
+            Text = "Chat Service";
             //get user from loginPage
             this.userLogged = userLogged;
             this.activeChatPages = new Dictionary<string, List<ChatPage>>();

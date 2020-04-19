@@ -11,8 +11,6 @@ namespace RemotingEvents.Server
         static void Main()
         {
             RemotingServer server = new RemotingServer();
-            //server.StartServer(1234);
-            //server.InitServer();
         }
     }
 }

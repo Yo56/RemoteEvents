@@ -83,6 +83,9 @@
     <EmbeddedResource Include="ChatPage.resx">
       <DependentUpon>ChatPage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LoginPage.resx">
+      <DependentUpon>LoginPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>
     </EmbeddedResource>

@@ -30,6 +30,7 @@ namespace RemotingEvents.Client
 
         public ChatPage(MainPage mp, User userLogged,  String otherUsername, String otherName, int port, String otherAddress, int otherPort)
         {
+            Text = otherUsername + " chat";
             this.userLogged = userLogged;
             this.mp = mp;
             this.otherUsername = otherUsername;

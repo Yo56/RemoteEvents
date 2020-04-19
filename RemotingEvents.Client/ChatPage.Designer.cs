@@ -41,10 +41,9 @@
             // 
             // MessageToSend
             // 
-            this.MessageToSend.Location = new System.Drawing.Point(23, 21);
-            this.MessageToSend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MessageToSend.Location = new System.Drawing.Point(17, 17);
             this.MessageToSend.Name = "MessageToSend";
-            this.MessageToSend.Size = new System.Drawing.Size(1328, 85);
+            this.MessageToSend.Size = new System.Drawing.Size(997, 69);
             this.MessageToSend.TabIndex = 1;
             this.MessageToSend.Text = "";
             // 
@@ -54,20 +53,19 @@
             this.CreateMessage.Controls.Add(this.Send);
             this.CreateMessage.Controls.Add(this.MessageToSend);
             this.CreateMessage.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.CreateMessage.Location = new System.Drawing.Point(15, 831);
-            this.CreateMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CreateMessage.Location = new System.Drawing.Point(11, 665);
+            this.CreateMessage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.CreateMessage.Name = "CreateMessage";
-            this.CreateMessage.Size = new System.Drawing.Size(1523, 128);
+            this.CreateMessage.Size = new System.Drawing.Size(1142, 102);
             this.CreateMessage.TabIndex = 2;
             // 
             // Send
             // 
             this.Send.BackColor = System.Drawing.SystemColors.HighlightText;
             this.Send.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Send.Location = new System.Drawing.Point(1375, 21);
-            this.Send.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Send.Location = new System.Drawing.Point(1031, 17);
             this.Send.Name = "Send";
-            this.Send.Size = new System.Drawing.Size(129, 86);
+            this.Send.Size = new System.Drawing.Size(97, 69);
             this.Send.TabIndex = 2;
             this.Send.Text = "Send";
             this.Send.UseVisualStyleBackColor = false;
@@ -77,10 +75,9 @@
             // 
             this.Messages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Messages.AutoScroll = true;
-            this.Messages.Location = new System.Drawing.Point(63, 150);
-            this.Messages.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Messages.Location = new System.Drawing.Point(47, 120);
             this.Messages.Name = "Messages";
-            this.Messages.Size = new System.Drawing.Size(1473, 675);
+            this.Messages.Size = new System.Drawing.Size(1105, 540);
             this.Messages.TabIndex = 3;
             // 
             // UserChatIdentification
@@ -89,20 +86,19 @@
             this.UserChatIdentification.Controls.Add(this.RealName);
             this.UserChatIdentification.Controls.Add(this.Nickname);
             this.UserChatIdentification.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.UserChatIdentification.Location = new System.Drawing.Point(16, 14);
-            this.UserChatIdentification.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.UserChatIdentification.Location = new System.Drawing.Point(12, 11);
+            this.UserChatIdentification.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.UserChatIdentification.Name = "UserChatIdentification";
-            this.UserChatIdentification.Size = new System.Drawing.Size(1523, 128);
+            this.UserChatIdentification.Size = new System.Drawing.Size(1142, 102);
             this.UserChatIdentification.TabIndex = 4;
             // 
             // RealName
             // 
             this.RealName.AutoSize = true;
             this.RealName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RealName.Location = new System.Drawing.Point(976, 39);
-            this.RealName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.RealName.Location = new System.Drawing.Point(732, 31);
             this.RealName.Name = "RealName";
-            this.RealName.Size = new System.Drawing.Size(219, 44);
+            this.RealName.Size = new System.Drawing.Size(165, 32);
             this.RealName.TabIndex = 1;
             this.RealName.Text = "Real Name";
             // 
@@ -110,24 +106,22 @@
             // 
             this.Nickname.AutoSize = true;
             this.Nickname.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Nickname.Location = new System.Drawing.Point(307, 39);
-            this.Nickname.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Nickname.Location = new System.Drawing.Point(230, 31);
             this.Nickname.Name = "Nickname";
-            this.Nickname.Size = new System.Drawing.Size(198, 44);
+            this.Nickname.Size = new System.Drawing.Size(149, 32);
             this.Nickname.TabIndex = 0;
             this.Nickname.Text = "Nickname";
             // 
             // ChatPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1552, 972);
+            this.ClientSize = new System.Drawing.Size(1164, 778);
             this.Controls.Add(this.UserChatIdentification);
             this.Controls.Add(this.Messages);
             this.Controls.Add(this.CreateMessage);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ChatPage";
-            this.Text = "ChatPage";
+            this.Text = "Chat";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ChatPage_FormClosed);
             this.CreateMessage.ResumeLayout(false);
             this.UserChatIdentification.ResumeLayout(false);
