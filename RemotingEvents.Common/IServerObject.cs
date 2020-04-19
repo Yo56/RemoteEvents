@@ -13,6 +13,8 @@ namespace RemotingEvents.Common
         event OnlineUsersChangedEvent OnlineUsersChanged;
         event NewChatRequestEvent NewChatRequest;
         event OpenAcceptedChatRequestEvent OpenAcceptedChatRequest;
+        event CloseOtherUserChatPageEvent CloseOtherUserChatPage;
+
 
         #endregion
 
@@ -34,6 +36,7 @@ namespace RemotingEvents.Common
         Dictionary<string, string> getOnlineUsers();
         Boolean SendChatRequest(string senderNickname, string receiverUsername);
         void makeOtherUserOpenChatPage(string senderNickname, string receiverUsername);
+        void makeOtherUserCloseChatPage(string senderNickname, string receiverUsername);
 
         ////////////////////////////////////////////////////////////////////////////////////////
         #endregion
