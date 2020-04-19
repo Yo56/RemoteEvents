@@ -332,7 +332,8 @@ namespace RemotingEvents.Client
             if (invitationSent)
             {
                 Console.WriteLine("invitation sent !");
-                button.Text = "sent !";
+                //button.Text = "Sent";
+                //button.Enabled = false;
             }
             else
             {

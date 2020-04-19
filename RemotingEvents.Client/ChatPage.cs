@@ -81,6 +81,7 @@ namespace RemotingEvents.Client
                     ASCIIEncoding eEncoding = new ASCIIEncoding();
                     string receivedMessage = eEncoding.GetString(receivedData);
 
+
                     showNewMessage(receivedMessage, true);
                 }
 
@@ -102,7 +103,6 @@ namespace RemotingEvents.Client
                 System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
                 byte[] msg = new byte[262200];
                 msg = enc.GetBytes(MessageToSend.Text);
-
                 sck.Send(msg);
 
                 showNewMessage(MessageToSend.Text, false);
@@ -127,6 +127,7 @@ namespace RemotingEvents.Client
                 if (message.Length > 0)
                 {
                     Console.WriteLine("Sowing new message: #" + Messages.Controls.Count);
+
                     Panel windowSizedPanel = new Panel();
                     windowSizedPanel.Size = new Size(700, 50);
 
@@ -140,7 +141,8 @@ namespace RemotingEvents.Client
                     text.Multiline = true;
                     text.ReadOnly = true;
                     text.BorderStyle = BorderStyle.None;
-                    text.Text = message;
+                    text.Text = message.Replace("\n", Environment.NewLine);
+                    
                     text.Size = new Size(400, 50);
 
                     SizeF MessageSize = text.CreateGraphics()
@@ -163,9 +165,10 @@ namespace RemotingEvents.Client
                     }
                     else
                     {
-                        Color sendingColor = Color.FromArgb(33, 149, 237);
+                        Color sendingColor = Color.FromArgb(0, 112, 204);
                         messagePanel.BackColor = sendingColor;
                         text.BackColor = sendingColor;
+                        text.ForeColor = Color.FromArgb(255, 255, 255);
                         text.Location = new Point(10, 0);
 
                         messagePanel.Left += 280;
