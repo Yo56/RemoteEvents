@@ -41,7 +41,7 @@ namespace RemotingEvents.Common
 
         public void LocallyHandleOpenAcceptedChatRequest(string senderNickname, string receiverNickname)
         {
-            if (NewChatRequest != null)
+            if (OpenAcceptedChatRequest != null)
                 OpenAcceptedChatRequest(senderNickname, receiverNickname);
         }
         #endregion
