@@ -19,9 +19,9 @@ namespace RemotingEvents.Client
 {
     public partial class ChatPage : Form
     {
-        User userLogged;
-        MainPage mp;
-        string otherUsername;
+        private User userLogged;
+        private MainPage mp;
+        public string otherUsername;
 
         Socket sck;
         EndPoint epLocal, epRemote;

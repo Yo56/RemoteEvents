@@ -18,7 +18,7 @@ namespace RemotingEvents.Client
     {
         //DATA
         User userLogged;
-        Dictionary<String, ChatPage> activeChatPages;
+        Dictionary<String, List<ChatPage>> activeChatPages;
 
         //Server component
         EventProxy eventProxy;
@@ -34,7 +34,7 @@ namespace RemotingEvents.Client
         {
             //get user from loginPage
             this.userLogged = userLogged;
-            this.activeChatPages = new Dictionary<string, ChatPage>();
+            this.activeChatPages = new Dictionary<string, List<ChatPage>>();
             InitializeComponent();
             labelUserFullName.Text = userLogged.Name;
             labelUserNickname.Text = userLogged.Nickname;
@@ -219,14 +219,28 @@ namespace RemotingEvents.Client
             }
 
             ChatPage chatPage = new ChatPage(this, userLogged, otheruserNickname, name, port, otherAddress, otherPort);
-            activeChatPages[otheruserNickname] = chatPage;
+            if(!activeChatPages.ContainsKey(otheruserNickname))
+            {
+                activeChatPages[otheruserNickname] = new List<ChatPage>();
+            }
+           
+
+            activeChatPages[otheruserNickname].Add(chatPage);
             chatPage.Show();
         }
 
         public void CloseChatPage(string otheruserNickname)
         {
             Console.WriteLine("Main Page after remote event: Because " + otheruserNickname + " closed his chat with me, " + otheruserNickname + " I'm going to close too");
-            activeChatPages[otheruserNickname].Close();
+
+            foreach(ChatPage cp in activeChatPages[otheruserNickname])
+            {
+                if(cp.otherUsername == otheruserNickname)
+                {
+                    cp.Close();
+                }
+            }
+
         }
 
         public void CloseOtherUserChatPage(string otheruserNickname)
