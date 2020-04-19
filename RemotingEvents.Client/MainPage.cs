@@ -226,6 +226,7 @@ namespace RemotingEvents.Client
         public void CloseChatPage(string otheruserNickname)
         {
             Console.WriteLine("Main Page after remote event: Because " + otheruserNickname + " closed his chat with me, " + otheruserNickname + " I'm going to close too");
+            activeChatPages[otheruserNickname].Close();
         }
 
         public void CloseOtherUserChatPage(string otheruserNickname)
