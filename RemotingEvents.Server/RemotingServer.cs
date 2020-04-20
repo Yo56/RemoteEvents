@@ -213,13 +213,6 @@ namespace TDIN_PROJ1.Server
 
         public int GetFreePort(String nickname)
         {
-            //TO DO: check first if other users on the same IP Adress are using these ports
-
-            //This will need to be stored in the server for every address (dictionary<String address, List<int Ports>>)
-            //nickname as argument
-
-            //Go to list of online users
-            //If their address is the same as ours, add their usedPorts list to our usedPorts list
 
             int port = 2828;
             String userAddress = onlineUsers[nickname];

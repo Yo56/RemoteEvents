@@ -21,7 +21,8 @@ namespace TDIN_PROJ1.Client
         TcpChannel tcpChan;
         BinaryClientFormatterSinkProvider clientProv;
         BinaryServerFormatterSinkProvider serverProv;
-        private string serverURI = "tcp://localhost:1234/serverExample.Rem";   
+        static string serverAddress = "localhost";
+        private string serverURI = "tcp://" + serverAddress + ":1234/serverExample.Rem";   
 
         public LoginPage()
         {
