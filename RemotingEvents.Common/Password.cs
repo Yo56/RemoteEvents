@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 
-namespace RemotingEvents.Common
+namespace TDIN_PROJ1.Common
 {
     public class Password
     {

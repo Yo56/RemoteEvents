@@ -10,9 +10,9 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Text;
 using System.Windows.Forms;
-using RemotingEvents.Common;
+using TDIN_PROJ1.Common;
 
-namespace RemotingEvents.Client
+namespace TDIN_PROJ1.Client
 {
     public partial class MainPage : Form
     {

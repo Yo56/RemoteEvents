@@ -6,10 +6,10 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
-using RemotingEvents.Common;
+using TDIN_PROJ1.Common;
 using System.Collections;
 
-namespace RemotingEvents.Client
+namespace TDIN_PROJ1.Client
 {
     public partial class LoginPage : Form
     {

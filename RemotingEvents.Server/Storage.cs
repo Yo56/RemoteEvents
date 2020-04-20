@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using RemotingEvents.Common;
+using TDIN_PROJ1.Common;
 
-namespace RemotingEvents.Server
+namespace TDIN_PROJ1.Server
 {
     class Storage
     {

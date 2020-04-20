@@ -1,4 +1,4 @@
-﻿namespace RemotingEvents.Client
+﻿namespace TDIN_PROJ1.Client
 {
     partial class LoginPage
     {

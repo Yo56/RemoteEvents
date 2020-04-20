@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace RemotingEvents.Client
+namespace TDIN_PROJ1.Client
 {
     static class Program
     {

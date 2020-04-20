@@ -10,12 +10,12 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Windows.Forms;
-using RemotingEvents.Common;
+using TDIN_PROJ1.Common;
 
 using System.Net;
 using System.Net.Sockets;
 
-namespace RemotingEvents.Client
+namespace TDIN_PROJ1.Client
 {
     public partial class ChatPage : Form
     {

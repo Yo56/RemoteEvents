@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RemotingEvents.Common;
+using TDIN_PROJ1.Common;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting;
 using System.Collections;
 using System.Runtime.Remoting.Channels;
 
-namespace RemotingEvents.Server
+namespace TDIN_PROJ1.Server
 {
     public class RemotingServer : MarshalByRefObject, IServerObject
     {

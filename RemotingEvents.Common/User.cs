@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RemotingEvents.Common
+namespace TDIN_PROJ1.Common
 {
     [Serializable]
     public class User
