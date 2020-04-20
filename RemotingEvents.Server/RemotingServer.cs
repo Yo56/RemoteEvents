@@ -285,7 +285,7 @@ namespace TDIN_PROJ1.Server
         {
             Console.WriteLine("Initialization...");
 
-            Storage.DeleteAllUsers();   // line commented => users are loaded from file
+            //Storage.DeleteAllUsers();   // line commented => users are loaded from file
                                         // line uncommented => users are deleted at server loading
 
             registeredUsers = Storage.LoadRegisteredUsersFromFile();

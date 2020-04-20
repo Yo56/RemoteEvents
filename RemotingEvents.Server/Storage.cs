@@ -9,7 +9,7 @@ namespace TDIN_PROJ1.Server
 {
     class Storage
     {
-        const string PATH = "registeredUsers.ser";
+        const string PATH = "../../registeredUsers.ser";
 
 
         //static method wich return the list of registered users saved on local storage.
