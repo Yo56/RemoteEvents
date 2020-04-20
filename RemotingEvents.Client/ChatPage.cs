@@ -186,6 +186,7 @@ namespace RemotingEvents.Client
         {
             Console.WriteLine("Chat page: Closing " + userLogged.Nickname + "'s chat page with " + otherUsername);
             Console.WriteLine("Chat page: Telling Main Page to close " + otherUsername + "'s chat page");
+            sck.Close();
             mp.CloseOtherUserChatPage(otherUsername);
         }
 

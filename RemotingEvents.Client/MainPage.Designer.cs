@@ -55,7 +55,7 @@
             this.panel1.Controls.Add(this.labelUsername);
             this.panel1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.panel1.Location = new System.Drawing.Point(9, 510);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1095, 86);
             this.panel1.TabIndex = 0;
@@ -105,7 +105,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Location = new System.Drawing.Point(9, 10);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -126,7 +126,7 @@
             // buttonLogOut
             // 
             this.buttonLogOut.Location = new System.Drawing.Point(11, 10);
-            this.buttonLogOut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonLogOut.Margin = new System.Windows.Forms.Padding(2);
             this.buttonLogOut.Name = "buttonLogOut";
             this.buttonLogOut.Size = new System.Drawing.Size(105, 43);
             this.buttonLogOut.TabIndex = 3;
@@ -139,7 +139,7 @@
             this.activeUsersFlowLayoutPanel.AutoScroll = true;
             this.activeUsersFlowLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.activeUsersFlowLayoutPanel.Location = new System.Drawing.Point(2, 64);
-            this.activeUsersFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.activeUsersFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.activeUsersFlowLayoutPanel.Name = "activeUsersFlowLayoutPanel";
             this.activeUsersFlowLayoutPanel.Size = new System.Drawing.Size(525, 429);
             this.activeUsersFlowLayoutPanel.TabIndex = 1;
@@ -183,9 +183,10 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainPage";
             this.Text = "Chat Application";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainPage_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

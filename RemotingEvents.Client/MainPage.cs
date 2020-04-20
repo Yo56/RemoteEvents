@@ -264,6 +264,22 @@ namespace RemotingEvents.Client
                 }
                 
             }
+
+            ClearAllOutdatedChatRequests(listOfOnlineUsers);
+        }
+
+
+        private void ClearAllOutdatedChatRequests(Dictionary<string, string> listOfOnlineUsers)
+        {
+            IEnumerable<Panel> chatRequests = chatRequestsFlowLayoutPanel.Controls.OfType<Panel>();
+            foreach(Panel chatRequest in chatRequests)
+            {
+                if (!listOfOnlineUsers.ContainsKey(chatRequest.Name))
+                {
+                    chatRequest.Dispose();
+                }
+            }
+
         }
 
         //method that creates a online user row
@@ -315,9 +331,14 @@ namespace RemotingEvents.Client
             }
         }
 
+
+
         #endregion
 
-
-        
+        private void MainPage_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Console.WriteLine("Disconnecting from server...");
+            remoteServer.LogOut(userLogged.Nickname);
+        }
     }
 }
