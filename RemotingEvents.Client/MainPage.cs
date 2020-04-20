@@ -208,6 +208,8 @@ namespace RemotingEvents.Client
 
             activeChatPages[otheruserNickname].Add(chatPage);
             chatPage.Show();
+
+            ResetSendChatInvitationButton(otheruserNickname);
         }
 
         public void CloseChatPage(string otheruserNickname)
@@ -322,8 +324,8 @@ namespace RemotingEvents.Client
             if (invitationSent)
             {
                 Console.WriteLine("invitation sent !");
-                //button.Text = "Sent";
-                //button.Enabled = false;
+                button.Text = "Sent";
+                button.Enabled = false;
             }
             else
             {
@@ -331,7 +333,20 @@ namespace RemotingEvents.Client
             }
         }
 
-
+        private void ResetSendChatInvitationButton(string otheruserNickname)
+        {
+            IEnumerable<Panel> activeUsers = activeUsersFlowLayoutPanel.Controls.OfType<Panel>();
+            foreach (Panel activeUser in activeUsers)
+            {
+                if (activeUser.Name == otheruserNickname)
+                {
+                    Console.WriteLine("Reseting " + activeUser.Name + " button");
+                    IEnumerable<Button> activeUserSentButton = activeUser.Controls.OfType<Button>();
+                    activeUserSentButton.First().Text = "Send Invitation";
+                    activeUserSentButton.First().Enabled = true;
+                }
+            }
+        }
 
         #endregion
 
