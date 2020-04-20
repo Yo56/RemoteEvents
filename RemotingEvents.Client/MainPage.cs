@@ -145,6 +145,8 @@ namespace RemotingEvents.Client
             clickedButton.Click -= new EventHandler(this.Decline_Click);
             clickedButton.Parent.Dispose();
 
+            ResetSendChatInvitationButton(username);
+
         }
 
         //method in relation with EventProxy
