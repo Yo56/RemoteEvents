@@ -374,7 +374,6 @@ namespace TDIN_PROJ1.Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     OnlineUsersChanged -= listener;
@@ -403,7 +402,6 @@ namespace TDIN_PROJ1.Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     NewChatRequest -= listener;
@@ -431,7 +429,6 @@ namespace TDIN_PROJ1.Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     OpenAcceptedChatRequest -= listener;
@@ -459,7 +456,6 @@ namespace TDIN_PROJ1.Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
                     //Could not reach the destination, so remove it
                     //from the list
                     CloseOtherUserChatPage -= listener;
